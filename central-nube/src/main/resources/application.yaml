@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: central-nube
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5434/nube}
+    username: ${DB_USER:pos}
+    password: ${DB_PASSWORD:pos}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
