@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: facturacion
+  rabbitmq:
+    host: ${RABBIT_HOST:localhost}
+    username: ${RABBIT_USER:pos}
+    password: ${RABBIT_PASSWORD:pos}
+
+facturacion:
+  demora-ms: ${FACTURACION_DEMORA_MS:0}
