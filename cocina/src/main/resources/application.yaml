@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: cocina
+  rabbitmq:
+    host: ${RABBIT_HOST:localhost}
+    username: ${RABBIT_USER:pos}
+    password: ${RABBIT_PASSWORD:pos}
