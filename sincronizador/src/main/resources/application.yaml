@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: sincronizador
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5433/sincronizador}
+    username: ${DB_USER:pos}
+    password: ${DB_PASSWORD:pos}
+  jpa:
+    hibernate:
+      ddl-auto: none
+  rabbitmq:
+    host: ${RABBIT_HOST:localhost}
+    username: ${RABBIT_USER:pos}
+    password: ${RABBIT_PASSWORD:pos}
+
+central:
+  url: ${CENTRAL_URL:http://localhost:8081}
