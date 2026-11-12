@@ -1,4 +1,6 @@
+# ==========================================
 # Compilación y artefactos de Maven
+# ==========================================
 target/
 **/target/
 pom.xml.tag
@@ -6,22 +8,67 @@ pom.xml.releaseBackup
 pom.xml.versionsBackup
 pom.xml.next
 release.properties
+.flattened-pom.xml
 
-# Archivos de configuración de IDEs
+# ==========================================
+# Archivos de entorno y secretos locales
+# ==========================================
+.env
+.env.local
+.env.*.local
+http-client.env.json
+docker-compose.override.yml
+
+# ==========================================
+# IDEs y Editores
+# ==========================================
+# IntelliJ IDEA
 .idea/
 *.iml
+*.iws
+*.ipr
+out/
+
+# Visual Studio Code
 .vscode/
+
+# Eclipse / STS
 .classpath
 .project
 .settings/
-*.ipr
-*.iws
+.factorypath
+.springBeans
+.sts4-cache
 
-# Logs y volcados temporales
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+
+# Editores y temporales
+*.swp
+*.swo
+*~
+
+# ==========================================
+# Logs, volcados de memoria y Java
+# ==========================================
 *.log
 *.tmp
 *.bak
+hs_err_pid*
+replay_pid*
+*.hprof
 
-# Archivos del sistema operativo
+# ==========================================
+# Sistema Operativo
+# ==========================================
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
