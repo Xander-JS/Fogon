@@ -1,0 +1,118 @@
+name: fogon
+
+x-rabbit: &rabbit
+  RABBIT_HOST: rabbitmq
+  RABBIT_USER: pos
+  RABBIT_PASSWORD: pos
+
+services:
+  # ============ NODO LOCAL DE LA SEDE (red-sede) ============
+  rabbitmq:
+    image: rabbitmq:4-management
+    environment:
+      RABBITMQ_DEFAULT_USER: pos
+      RABBITMQ_DEFAULT_PASS: pos
+    ports:
+      - "15672:15673"   # consola web: http://localhost:15672 (pos / pos)
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks: [red-sede]
+
+  db-sede:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: sede
+      POSTGRES_USER: pos
+      POSTGRES_PASSWORD: pos
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pos -d sede"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks: [red-sede]
+
+  db-sincronizador:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: sincronizador
+      POSTGRES_USER: pos
+      POSTGRES_PASSWORD: pos
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pos -d sincronizador"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks: [red-sede]
+
+  pos-sede:
+    build: ./pos-sede
+    ports:
+      - "8080:8080"
+    environment:
+      <<: *rabbit
+      DB_URL: jdbc:postgresql://db-sede:5432/sede
+      POS_SEDE_ID: sede-centro
+    depends_on:
+      rabbitmq: { condition: service_healthy }
+      db-sede: { condition: service_healthy }
+    networks: [red-sede]
+
+  cocina:
+    build: ./cocina
+    environment:
+      <<: *rabbit
+    depends_on:
+      rabbitmq: { condition: service_healthy }
+    networks: [red-sede]
+
+  facturacion:
+    build: ./facturacion
+    environment:
+      <<: *rabbit
+      FACTURACION_DEMORA_MS: ${FACTURACION_DEMORA_MS:-0}
+    depends_on:
+      rabbitmq: { condition: service_healthy }
+    networks: [red-sede]
+
+  # El único servicio que está en las dos redes: es el puente sede <-> nube
+  sincronizador:
+    build: ./sincronizador
+    environment:
+      <<: *rabbit
+      DB_URL: jdbc:postgresql://db-sincronizador:5432/sincronizador
+      CENTRAL_URL: http://central-nube:8080
+    depends_on:
+      rabbitmq: { condition: service_healthy }
+      db-sincronizador: { condition: service_healthy }
+    networks: [red-sede, red-nube]
+
+  # ============ NUBE (red-nube) ============
+  db-nube:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: nube
+      POSTGRES_USER: pos
+      POSTGRES_PASSWORD: pos
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pos -d nube"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks: [red-nube]
+
+  central-nube:
+    build: ./central-nube
+    ports:
+      - "8081:8080"
+    environment:
+      DB_URL: jdbc:postgresql://db-nube:5432/nube
+    depends_on:
+      db-nube: { condition: service_healthy }
+    networks: [red-nube]
+
+networks:
+  red-sede: {}
+  red-nube: {}
