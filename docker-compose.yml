@@ -13,7 +13,7 @@ services:
       RABBITMQ_DEFAULT_USER: pos
       RABBITMQ_DEFAULT_PASS: pos
     ports:
-      - "15672:15673"   # consola web: http://localhost:15672 (pos / pos)
+      - "15672:15672"   # consola web: http://localhost:15672 (pos / pos)
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
       interval: 5s
