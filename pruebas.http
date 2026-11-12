@@ -1,0 +1,32 @@
+### 1. Crear un pedido (lo reciben cocina, facturación y sincronizador)
+POST http://localhost:8080/pedidos
+Content-Type: application/json
+
+{"mesa": "5", "mesero": "laura", "descripcion": "2 bandejas paisas y 2 limonadas", "total": 64000}
+
+### 2. Listar pedidos de la sede
+GET http://localhost:8080/pedidos
+
+### 3. Anular un pedido (reemplacen el id por uno del paso 2)
+POST http://localhost:8080/pedidos/REEMPLAZAR-ID/anular
+Content-Type: application/json
+
+{"supervisor": "carlos", "motivo": "El cliente se fue antes de recibir el pedido"}
+
+### 4. Regla de negocio: anular sin motivo es rechazado (400)
+POST http://localhost:8080/pedidos/REEMPLAZAR-ID/anular
+Content-Type: application/json
+
+{"supervisor": "carlos", "motivo": ""}
+
+### 5. Historial de auditoría (solo-agregar, con hash encadenado)
+GET http://localhost:8080/auditoria
+
+### 6. Verificar que nadie alteró el historial
+GET http://localhost:8080/auditoria/verificar
+
+### 7. Lo que llegó a la nube
+GET http://localhost:8081/eventos
+
+### 8. Reporte central de ventas por sede
+GET http://localhost:8081/reportes/ventas
