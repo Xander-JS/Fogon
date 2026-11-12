@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: pos-sede
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/sede}
+    username: ${DB_USER:pos}
+    password: ${DB_PASSWORD:pos}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+  rabbitmq:
+    host: ${RABBIT_HOST:localhost}
+    username: ${RABBIT_USER:pos}
+    password: ${RABBIT_PASSWORD:pos}
+
+pos:
+  sede: ${POS_SEDE_ID:sede-centro}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
