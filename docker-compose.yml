@@ -13,7 +13,7 @@ services:
       RABBITMQ_DEFAULT_USER: pos
       RABBITMQ_DEFAULT_PASS: pos
     ports:
-      - "15672:15672"   # consola web: http://localhost:15672 (pos / pos)
+      - "15673:15672"   # consola web: http://localhost:15673 (pos / pos)
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
       interval: 5s
@@ -50,7 +50,7 @@ services:
   pos-sede:
     build: ./pos-sede
     ports:
-      - "8080:8080"
+      - "8180:8080"
     environment:
       <<: *rabbit
       DB_URL: jdbc:postgresql://db-sede:5432/sede
@@ -106,7 +106,7 @@ services:
   central-nube:
     build: ./central-nube
     ports:
-      - "8081:8080"
+      - "8181:8080"
     environment:
       DB_URL: jdbc:postgresql://db-nube:5432/nube
     depends_on:
