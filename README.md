@@ -27,9 +27,9 @@ docker compose up --build
 
 La primera vez tarda varios minutos porque descarga las dependencias de Maven.
 
-- API de la sede: http://localhost:8080/pedidos
-- Nube: http://localhost:8081/eventos y http://localhost:8081/reportes/ventas
-- Consola de RabbitMQ: http://localhost:15672 (usuario `pos`, clave `pos`)
+- API de la sede: http://localhost:8180/pedidos
+- Nube: http://localhost:8181/eventos y http://localhost:8181/reportes/ventas
+- Consola de RabbitMQ: http://localhost:15673 (usuario `pos`, clave `pos`)
 
 Las peticiones de prueba están en `pruebas.http` (se ejecutan directo desde IntelliJ o VS Code con la extensión REST Client).
 
